@@ -1,0 +1,41 @@
+<!-- FORMULÁRIO DE FILTROS -->
+<form th-action="@{/}" method="get">
+    <input type="text" name="texto" placeholder="Busca por nome ou número..." th:value="${textoBuscado}">
+    
+    <select name="cargo">
+        <option value="">Todos os Cargos</option>
+        <option th-each="c : ${opcoesCargo}" 
+                th:value="${c}" 
+                th:text="${c}" 
+                th:selected="${c == cargoSelecionado}">
+        </option>
+    </select>
+
+    <select name="partido">
+        <option value="">Todos os Partidos</option>
+        <option th-each="p : ${opcoesPartido}" 
+                th:value="${p}" 
+                th:text="${p}" 
+                th:selected="${p == partidoSelecionado}">
+        </option>
+    </select>
+
+    <button type="submit">Filtrar</button>
+    <a th-href="@{/}"><button type="button">Limpar</button></a>
+</form>
+
+<p>Total encontrado: <span th-text="${candidatos.size()}">0</span></p>
+
+<!-- EXIBIÇÃO EM CARDS -->
+<div class="container-cards">
+    <div class="card" th-each="cand : ${candidatos}">
+        <img th-src="@{/images/candidatos/{foto}(foto=${cand.fotoNome})}" 
+             onerror="this.src='/images/candidatos/placeholder.jpg';" 
+             width="150" alt="Foto Candidato" />
+        
+        <h3 th-text="${cand.nomeUrna}">Nome Urna</h3>
+        <p><strong>Número:</strong> <span th-text="${cand.numero}">---</span></p>
+        <p><strong>Cargo:</strong> <span th-text="${cand.cargo}">---</span></p>
+        <p><strong>Partido:</strong> <span th-text="${cand.partido}">---</span></p>
+    </div>
+</div>
